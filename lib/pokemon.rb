@@ -37,4 +37,5 @@ class Pokemon
     self.hp = new_hp
   end
 
+
 end
