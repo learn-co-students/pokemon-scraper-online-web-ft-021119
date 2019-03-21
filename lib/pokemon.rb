@@ -15,12 +15,12 @@ class Pokemon
 
   def self.find(id, db)
     info = db.execute("SELECT * FROM pokemon WHERE id = #{1}").flatten
-    Pokemon.new(id:info[0], name:info[1], type:info[2], db:db)
+    Pokemon.new(id:info[0], name:info[1], type:info[2], db:db) unless
+    @@all.find {|pokemon| pokemon.id == id}
   end
 
   def alter_hp(new_hp, db)
     db.execute("UPDATE pokemon SET hp = (?)", new_hp)
-    binding.pry
     self.hp = new_hp
   end
 end
