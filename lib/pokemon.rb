@@ -1,11 +1,18 @@
 require 'pry'
 class Pokemon
-  attr_accessor :id, :name, :type, :db
+  attr_accessor :id, :name, :type, :db, :hp
   @@all = []
 
   def initialize(data)
-    data.each do |k, v|
-      self.send "#{k}=", v
+    if data.keys.include?(:hp)
+      data.each do |k, v|
+        self.send("#{k}=", v)
+      end
+    else
+      data.each do |k, v|
+        self.send("#{k}=", v)
+      end
+      @hp = 60
     end
     @@all << self
   end
@@ -17,10 +24,18 @@ class Pokemon
   def self.find(id, db)
     # binding.pry
     new = db.execute("SELECT * FROM pokemon WHERE id = ?",id).flatten
-    binding.pry
+    # binding.pry
     data = {id:new[0], name:new[1], type:new[2], db:db}
-    binding.pry
+    # binding.pry
     self.new(data)
+  end
+
+  def alter_hp(hp, db)
+    # binding.pry
+    db.execute("UPDATE pokemon SET hp = ? WHERE id = ?", hp, self.id)
+
+    # class.self.save(self.name, self.type, db)
+
   end
 
 end
