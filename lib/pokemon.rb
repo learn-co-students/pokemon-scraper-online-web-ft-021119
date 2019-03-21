@@ -12,11 +12,11 @@ class Pokemon
 
 
   def self.save(name, type, db)
-    db.execute("INSERT INTO Pokemon (name, type) VALUES (?, ?)", name, type)
+    db.execute("INSERT INTO pokemon (name, type) VALUES (?, ?)", name, type)
   end
 
   def self.find(id, db)
-    data = db.execute("SELECT * FROM Pokemon WHERE Pokemon.id = #{id};")
+    data = db.execute("SELECT * FROM pokemon WHERE pokemon.id = #{id};")
     new_pokeman = self.new(data)
     new_pokeman.id = data[0][0]
     new_pokeman.name = data[0][1]
@@ -26,7 +26,15 @@ class Pokemon
   end
 
   def BONUS
-    db.execute("INSERT INTO Pokemon (hp) VALUES (?)", 60)
+    db.execute("INSERT INTO pokemon (hp) VALUES (?)", 60)
+    pikachu.alter_hp(59, db)
+    magikarp.alter_hp(0, db)
+
+  end
+
+  def alter_hp(new_hp, db)
+    db.execute("UPDATE pokemon SET hp = ? WHERE id = ?", [new_hp], [self.id])
+    self.hp = new_hp
   end
 
 end
